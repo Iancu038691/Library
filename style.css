@@ -1,10 +1,36 @@
-table {
-    border: 1px solid black;
-    margin-top: 15px;
-    margin-left: 15px;
-    padding: 0;
+:root {
+    font-family: 'Times New Roman', Times, serif;
+    padding: 15px;
+}
+body {
+    display: grid;
 }
 
-th, td {
-    border-right: 1px solid black;
+
+form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-rows: 1fr 1fr;
+}
+
+.box {
+    padding: 15px;
+    border: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.box > form {
+    display: flex;
+    flex-direction: row;
 }
