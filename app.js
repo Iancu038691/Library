@@ -1,10 +1,12 @@
 const myLibrary = [];
 let copyMyLibrary = [];
-function Book(title, author, pages, status) {
-  this.title = title,
-  this.author = author,
-  this.pages = pages,
-  this.status = status;
+class Book {
+  constructor(title, author, pages, status) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.status = status;
+  }
 }
 
 function addBookToLibrary(title, author, pages, status) {
@@ -14,24 +16,35 @@ function addBookToLibrary(title, author, pages, status) {
 // if (myLibrary.length !== 0) copyMyLibrary = myLibrary.slice();
 
 addBookToLibrary('Games of Throne', 'George R.R. Martin', '373', false);
-searchForItems();
+// searchForItems();
+addLastItem();
 const title = document.querySelector('#title');
 const author = document.querySelector('#author');
 const pages = document.querySelector('#pages');
 const statusPending = document.querySelector('#status');
 const btn = document.querySelector('#btn');
 function isNotZero(a, b, c) {
-  if (a === '' || b === '' || c === '') { return 'wrong'; }
+  if (a === '' || b === '' || c === '') {
+    return 'wrong';
+  }
   return 'good';
 }
 if (myLibrary.length !== 0) copyMyLibrary = myLibrary.slice();
 btn.onclick = (event) => {
   event.preventDefault();
   if (isNotZero(title.value, author.value, pages.value) === 'good') {
-    addBookToLibrary(title.value, author.value, pages.value, statusPending.checked);
-    title.value = ''; author.value = ''; pages.value = ''; statusPending.checked = false;
+    addBookToLibrary(
+      title.value,
+      author.value,
+      pages.value,
+      statusPending.checked,
+    );
+    title.value = '';
+    author.value = '';
+    pages.value = '';
+    statusPending.checked = false;
   }
-  if (copyMyLibrary.length !== myLibrary.length || copyMyLibrary.length == 0) {
+  if (copyMyLibrary.length !== myLibrary.length || copyMyLibrary.length === 0) {
     addLastItem();
     copyMyLibrary = myLibrary.slice();
   }
@@ -67,12 +80,16 @@ function addLastItem() {
     const bookStatus = document.createElement('input');
     bookStatus.type = 'checkbox';
     bookStatus.setAttribute('id', `bookStatus${myLibrary.length}`);
-    bookStatus.textContent = myLibrary[myLibrary.length - 1].status;
+    bookStatus.checked = myLibrary[myLibrary.length - 1].status;
     const label = document.createElement('label');
-    label.textContent = `Status:${statusChecked(myLibrary[myLibrary.length - 1].status)}`;
+    label.textContent = `Status:${statusChecked(
+      myLibrary[myLibrary.length - 1].status,
+    )}`;
     label.htmlFor = `bookStatus${myLibrary.length}`;
     bookStatus.addEventListener('click', () => {
-      label.textContent === 'Status:not yet' ? label.textContent = 'Status:reading' : label.textContent = 'Status:not yet';
+      if (label.textContent === 'Status:not yet') { label.textContent = 'Status:reading'; myLibrary[myLibrary.length - 1].status = true; } else {
+        label.textContent = 'Status:not yet'; myLibrary[myLibrary.length - 1].status = false;
+      }
     });
     box.appendChild(bookTitle);
     box.appendChild(bookAuthor);
@@ -123,7 +140,9 @@ function searchForItems() {
       label.htmlFor = `bookStatus${myLibrary.length}`;
 
       bookStatus.addEventListener('click', () => {
-        label.textContent === 'Status:not yet' ? label.textContent = 'Status:reading' : label.textContent = 'Status:not yet';
+        label.textContent === 'Status:not yet'
+          ? (label.textContent = 'Status:reading')
+          : (label.textContent = 'Status:not yet');
       });
 
       box.appendChild(bookTitle);
